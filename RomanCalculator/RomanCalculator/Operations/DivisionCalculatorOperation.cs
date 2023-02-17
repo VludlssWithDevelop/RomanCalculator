@@ -5,7 +5,7 @@ namespace RomanCalculator.Operations
     /// <summary>
     /// Операция деления
     /// </summary>
-    internal sealed class DivisionCalculatorOperation : CalculatorOperation
+    public sealed class DivisionCalculatorOperation : CalculatorOperation
     {
         public DivisionCalculatorOperation(int executePriority, char operationMark) 
             : base(executePriority, operationMark)

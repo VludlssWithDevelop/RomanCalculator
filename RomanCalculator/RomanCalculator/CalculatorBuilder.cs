@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using RomanCalculator.Core.Contracts;
 using RomanCalculator.Core.Operations.Common;
+using RomanCalculator.Operations;
 
 namespace RomanCalculator
 {
@@ -12,6 +13,17 @@ namespace RomanCalculator
         public CalculatorBuilder()
         {
 
+        }
+
+        public static ICalculatorOperationBuilder CreateDefault()
+        {
+            var calculatorBuilder = new CalculatorBuilder()
+                .AddOperation(new MultiplicationCalculatorOperation(executePriority: 1, operationMark: '*'))
+                .AddOperation(new DivisionCalculatorOperation(executePriority: 1, operationMark: '/'))
+                .AddOperation(new AdditionCalculatorOperation(executePriority: 2, operationMark: '+'))
+                .AddOperation(new SubstractionCalculatorOperation(executePriority: 2, operationMark: '-'));
+
+            return calculatorBuilder;
         }
 
         public ICalculatorOperationBuilder AddOperation(CalculatorOperation operation)

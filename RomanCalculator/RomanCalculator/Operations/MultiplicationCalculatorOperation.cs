@@ -5,7 +5,7 @@ namespace RomanCalculator.Operations
     /// <summary>
     /// Операция умножения
     /// </summary>
-    internal sealed class MultiplicationCalculatorOperation : CalculatorOperation
+    public sealed class MultiplicationCalculatorOperation : CalculatorOperation
     {
         public MultiplicationCalculatorOperation(int executePriority, char operationMark) 
             : base(executePriority, operationMark)

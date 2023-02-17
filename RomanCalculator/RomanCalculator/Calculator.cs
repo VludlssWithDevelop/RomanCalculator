@@ -24,11 +24,7 @@ namespace RomanCalculator
 
         public static Calculator CreateDefault()
         {
-            var calculatorBuilder = new CalculatorBuilder()
-                .AddOperation(new MultiplicationCalculatorOperation(executePriority: 1, operationMark: '*'))
-                .AddOperation(new DivisionCalculatorOperation(executePriority: 1, operationMark: '/'))
-                .AddOperation(new AdditionCalculatorOperation(executePriority: 2, operationMark: '+'))
-                .AddOperation(new SubstractionCalculatorOperation(executePriority: 2, operationMark: '-'));
+            var calculatorBuilder = CalculatorBuilder.CreateDefault();
 
             return new Calculator(calculatorBuilder);
         }

@@ -1,8 +1,10 @@
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using RomanCalculator.Core.Contracts;
 using RomanCalculator.Core.Enums;
 using RomanCalculator.Core.Exceptions;
 using RomanCalculator.Core.Utils;
+using RomanCalculator.Extensions;
 
 namespace RomanCalculator.Tests
 {
@@ -12,7 +14,11 @@ namespace RomanCalculator.Tests
 
         public CalculatorTests()
         {
-            _calculator = Calculator.CreateDefault();
+            IServiceCollection services = new ServiceCollection();
+            services.AddRomanCalculator();
+            
+            var provider = services.BuildServiceProvider();
+            _calculator = provider.GetRequiredService<ICalculator>();
         }
 
         [Theory]

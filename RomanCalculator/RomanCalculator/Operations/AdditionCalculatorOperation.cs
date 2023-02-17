@@ -5,7 +5,7 @@ namespace RomanCalculator.Operations
     /// <summary>
     /// Операция сложения
     /// </summary>
-    internal sealed class AdditionCalculatorOperation : CalculatorOperation
+    public sealed class AdditionCalculatorOperation : CalculatorOperation
     {
         public AdditionCalculatorOperation(int executePriority, char operationMark) 
             : base(executePriority, operationMark)

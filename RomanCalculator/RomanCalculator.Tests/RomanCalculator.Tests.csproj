@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RomanCalculator.Extensions.DependencyInjection\RomanCalculator.Extensions.DependencyInjection.csproj" />
     <ProjectReference Include="..\RomanCalculator\RomanCalculator.csproj" />
   </ItemGroup>
 
