@@ -63,9 +63,11 @@ void WriteHelloMessage()
     helloMessage.AppendLine();
     helloMessage.AppendLine($"Available roman characters: {CalculatorConstants.ValidRomanNumberChars}");
     helloMessage.AppendLine("Available math operations: + - * / ()");
-    helloMessage.AppendLine("Available numbers: positive, negative");
+    helloMessage.AppendLine("Available numbers: positive, negative, float number");
     helloMessage.AppendLine();
     helloMessage.AppendLine($"Type '{closeKeyWord}' if you want to stop work with this app.");
+    helloMessage.AppendLine();
+    helloMessage.AppendLine("Supported feature for developers: adding custom math operations");
     helloMessage.AppendLine();
 
     Console.ForegroundColor = ConsoleColor.White;
