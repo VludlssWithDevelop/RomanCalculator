@@ -15,7 +15,10 @@ namespace RomanCalculator.Tests
         public CalculatorTests()
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddRomanCalculator();
+            services.AddRomanCalculator(builder =>
+            {
+                builder.AddDefaultOperations();
+            });
             
             var provider = services.BuildServiceProvider();
             _calculator = provider.GetRequiredService<ICalculator>();

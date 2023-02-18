@@ -18,10 +18,10 @@ namespace RomanCalculator
         public static ICalculatorOperationBuilder CreateDefault()
         {
             var calculatorBuilder = new CalculatorBuilder()
-                .AddOperation(new MultiplicationCalculatorOperation(executePriority: 1, operationMark: '*'))
-                .AddOperation(new DivisionCalculatorOperation(executePriority: 1, operationMark: '/'))
-                .AddOperation(new AdditionCalculatorOperation(executePriority: 2, operationMark: '+'))
-                .AddOperation(new SubstractionCalculatorOperation(executePriority: 2, operationMark: '-'));
+                .AddMultiplicationOperation()
+                .AddDivisionOperation()
+                .AddAdditionOperation()
+                .AddSubstractionOperation();
 
             return calculatorBuilder;
         }
@@ -29,6 +29,40 @@ namespace RomanCalculator
         public ICalculatorOperationBuilder AddOperation(CalculatorOperation operation)
         {
             _calculatorOperations.Add(operation);
+            return this;
+        }
+
+        public ICalculatorOperationBuilder AddDefaultOperations()
+        {
+            var calculatorBuilder = this.AddMultiplicationOperation()
+                .AddDivisionOperation()
+                .AddAdditionOperation()
+                .AddSubstractionOperation();
+
+            return calculatorBuilder;
+        }
+
+        public ICalculatorOperationBuilder AddAdditionOperation(int executePriority = 2, char operationMark = '+')
+        {
+            _calculatorOperations.Add(new AdditionCalculatorOperation(executePriority, operationMark));
+            return this;
+        }
+
+        public ICalculatorOperationBuilder AddDivisionOperation(int executePriority = 1, char operationMark = '/')
+        {
+            _calculatorOperations.Add(new DivisionCalculatorOperation(executePriority, operationMark));
+            return this;
+        }
+
+        public ICalculatorOperationBuilder AddMultiplicationOperation(int executePriority = 1, char operationMark = '*')
+        {
+            _calculatorOperations.Add(new MultiplicationCalculatorOperation(executePriority, operationMark));
+            return this;
+        }
+
+        public ICalculatorOperationBuilder AddSubstractionOperation(int executePriority = 2, char operationMark = '-')
+        {
+            _calculatorOperations.Add(new SubstractionCalculatorOperation(executePriority, operationMark));
             return this;
         }
     }

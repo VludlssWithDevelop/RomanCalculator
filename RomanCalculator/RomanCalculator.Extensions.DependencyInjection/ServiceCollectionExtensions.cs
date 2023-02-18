@@ -9,9 +9,9 @@ namespace RomanCalculator.Extensions
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Зарегистрировать калькулятор в DI контейнере
+        /// Зарегистрировать калькулятор, с базовыми настройками, в DI контейнере
         /// </summary>
-        public static IServiceCollection AddRomanCalculator(this IServiceCollection services)
+        public static IServiceCollection AddRomanCalculatorDefault(this IServiceCollection services)
         {
             var calculatorBuilder = CalculatorBuilder.CreateDefault();
 
@@ -26,7 +26,7 @@ namespace RomanCalculator.Extensions
         /// <param name="calculatorBuilderFunc">Callback для добавления кастомных операций</param>
         public static IServiceCollection AddRomanCalculator(this IServiceCollection services, Action<ICalculatorOperationBuilder> calculatorBuilderFunc)
         {
-            var calculatorBuilder = CalculatorBuilder.CreateDefault();
+            var calculatorBuilder = new CalculatorBuilder();
 
             calculatorBuilderFunc(calculatorBuilder);
 

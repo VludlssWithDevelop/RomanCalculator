@@ -9,11 +9,7 @@ using RomanCalculator.Extensions;
 
 const string closeKeyWord = "close";
 
-IServiceCollection services = new ServiceCollection();
-services.AddRomanCalculator();
-
-var provider = services.BuildServiceProvider();
-
+var provider = ConfigureServices();
 var romanCalculator = provider.GetRequiredService<ICalculator>();
 
 WriteHelloMessage();
@@ -98,4 +94,16 @@ void WriteError(string text)
     Console.WriteLine(text);
     Console.WriteLine();
     Console.ResetColor();
+}
+
+IServiceProvider ConfigureServices()
+{
+    IServiceCollection services = new ServiceCollection();
+
+    services.AddRomanCalculator(builder =>
+    {
+        builder.AddDefaultOperations();
+    });
+
+    return services.BuildServiceProvider();
 }
