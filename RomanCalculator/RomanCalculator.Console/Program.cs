@@ -1,5 +1,8 @@
 ﻿using System.Text;
+using CommandLine;
 using Microsoft.Extensions.DependencyInjection;
+using RomanCalculator.Console.Enums;
+using RomanCalculator.Console.Models;
 using RomanCalculator.Core;
 using RomanCalculator.Core.Contracts;
 using RomanCalculator.Core.Enums;
@@ -9,21 +12,54 @@ using RomanCalculator.Extensions;
 
 const string closeKeyWord = "close";
 
+SetMainConsoleSettings();
+
 var provider = ConfigureServices();
 var romanCalculator = provider.GetRequiredService<ICalculator>();
+
+var processAppArgsResult = ProcessAppArgs(args);
+if (processAppArgsResult == ArgsParsingResult.ArgsNotEmptyWorkStop)
+    return;
 
 WriteHelloMessage();
 
 while (true)
 {
+    WriteInputMessage();
+
+    var userInput = Console.ReadLine();
+    if (userInput.Trim() == closeKeyWord)
+        return;
+
+    ProcessUserInput(userInput);
+}
+
+void SetMainConsoleSettings()
+{
+    Console.Title = "Roman Calculator (BETA)";
+}
+
+ArgsParsingResult ProcessAppArgs(string[] args)
+{
+    if (args.Any())
+    {
+        var commandLineOptions = Parser.Default.ParseArguments<CommandLineOptions>(args).Value;
+
+        ProcessUserInput(commandLineOptions.RomanExpression);
+
+        if (commandLineOptions.WorkContinue)
+            return ArgsParsingResult.ArgsNotEmptyWorkContinue;
+        else
+            return ArgsParsingResult.ArgsNotEmptyWorkStop;
+    }
+
+    return ArgsParsingResult.ArgsEmptyWorkContinue;
+}
+
+void ProcessUserInput(string userInput)
+{
     try
     {
-        WriteInputMessage();
-
-        var userInput = Console.ReadLine();
-        if (userInput.Trim() == closeKeyWord)
-            return;
-
         var romanCalculatorEvaluateResult = romanCalculator.Evaluate(userInput);
         WriteCalculatorEvaluateResult(romanCalculatorEvaluateResult);
     }
@@ -47,7 +83,7 @@ while (true)
     {
         var errorMessage = AttributeUtils.GetEnumDescription(ErrorCodes.InvalidRomanNumeral);
         var formattedErrorMessage = string.Format(errorMessage, ex.InvalidRomanNumber);
-        
+
         WriteError(formattedErrorMessage);
     }
 }
@@ -62,6 +98,12 @@ void WriteHelloMessage()
     helloMessage.AppendLine("Available numbers: positive, negative, float number");
     helloMessage.AppendLine();
     helloMessage.AppendLine($"Type '{closeKeyWord}' if you want to stop work with this app.");
+    helloMessage.AppendLine();
+    helloMessage.AppendLine("Additionally: you can run the app from the command line and pass the following parameters:");
+    helloMessage.AppendLine("'-e' '--expr' - roman math expression without spaces");
+    helloMessage.AppendLine("'-w' - continue the app work after the evaluation");
+    helloMessage.AppendLine();
+    helloMessage.AppendLine("Example: RomanCalculator.Console -e '(V+V)*II' -w");
     helloMessage.AppendLine();
     helloMessage.AppendLine("Supported feature for developers: adding custom math operations");
     helloMessage.AppendLine();
