@@ -35,12 +35,12 @@ namespace RomanCalculator
 
         public ICalculatorOperationBuilder AddDefaultOperations()
         {
-            var calculatorBuilder = this.AddMultiplicationOperation()
-                .AddDivisionOperation()
-                .AddAdditionOperation()
-                .AddSubstractionOperation();
+            AddMultiplicationOperation();
+            AddDivisionOperation();
+            AddAdditionOperation();
+            AddSubstractionOperation();
 
-            return calculatorBuilder;
+            return this;
         }
 
         public ICalculatorOperationBuilder AddAdditionOperation(int executePriority = 2, char operationMark = '+')
