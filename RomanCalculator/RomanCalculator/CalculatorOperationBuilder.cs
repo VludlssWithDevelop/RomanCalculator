@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RomanCalculator.Core.Contracts;
+using RomanCalculator.Core.Exceptions;
 using RomanCalculator.Core.Operations.Common;
 using RomanCalculator.Operations;
 
@@ -29,6 +31,12 @@ namespace RomanCalculator
 
         public ICalculatorOperationBuilder AddOperation(CalculatorOperation operation)
         {
+            var hasOperationMark = _calculatorOperations
+                .Any(innerOperation => innerOperation.OperationMark == operation.OperationMark);
+
+            if (hasOperationMark)
+                throw new OperationMarkAlreadyExistException($"Operation with '{operation.OperationMark}' mark already exists!");
+
             _calculatorOperations.Add(operation);
             return this;
         }
@@ -45,25 +53,25 @@ namespace RomanCalculator
 
         public ICalculatorOperationBuilder AddAdditionOperation(int executePriority = 2, char operationMark = '+')
         {
-            _calculatorOperations.Add(new AdditionCalculatorOperation(executePriority, operationMark));
+            AddOperation(new AdditionCalculatorOperation(executePriority, operationMark));
             return this;
         }
 
         public ICalculatorOperationBuilder AddDivisionOperation(int executePriority = 1, char operationMark = '/')
         {
-            _calculatorOperations.Add(new DivisionCalculatorOperation(executePriority, operationMark));
+            AddOperation(new DivisionCalculatorOperation(executePriority, operationMark));
             return this;
         }
 
         public ICalculatorOperationBuilder AddMultiplicationOperation(int executePriority = 1, char operationMark = '*')
         {
-            _calculatorOperations.Add(new MultiplicationCalculatorOperation(executePriority, operationMark));
+            AddOperation(new MultiplicationCalculatorOperation(executePriority, operationMark));
             return this;
         }
 
         public ICalculatorOperationBuilder AddSubstractionOperation(int executePriority = 2, char operationMark = '-')
         {
-            _calculatorOperations.Add(new SubstractionCalculatorOperation(executePriority, operationMark));
+            AddOperation(new SubstractionCalculatorOperation(executePriority, operationMark));
             return this;
         }
 

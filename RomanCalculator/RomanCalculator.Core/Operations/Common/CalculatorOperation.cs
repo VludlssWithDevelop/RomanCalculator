@@ -26,13 +26,14 @@ namespace RomanCalculator.Core.Operations.Common
         public int ExecutePriority { get; }
         public string MatchedPattern { get; set; }
 
+        public string OperationMark { get; }
+
         public CalculatorOperation(int executePriority, char operationMark)
         {
             ExecutePriority = executePriority;
+            OperationMark = Regex.Escape(char.ToString(operationMark));
 
-            var escapedOperationMark = Regex.Escape(char.ToString(operationMark));
-
-            var romanNumberPattern = $@"(?<{LeftOperandSectionKey}>(?<{LeftOperandMinusKey}>\-?)(?<{LeftOperandValueKey}>[{CalculatorConstants.ValidRomanNumberChars}]+((\.|\,)[{CalculatorConstants.ValidRomanNumberChars}]+)?)){escapedOperationMark}(?<{RightOperandSectionKey}>(?<{RightOperandMinusKey}>\-?)(?<{RightOperandValueKey}>[{CalculatorConstants.ValidRomanNumberChars}]+((\.|\,)[{CalculatorConstants.ValidRomanNumberChars}]+)?))";
+            var romanNumberPattern = $@"(?<{LeftOperandSectionKey}>(?<{LeftOperandMinusKey}>\-?)(?<{LeftOperandValueKey}>[{CalculatorConstants.ValidRomanNumberChars}]+((\.|\,)[{CalculatorConstants.ValidRomanNumberChars}]+)?)){OperationMark}(?<{RightOperandSectionKey}>(?<{RightOperandMinusKey}>\-?)(?<{RightOperandValueKey}>[{CalculatorConstants.ValidRomanNumberChars}]+((\.|\,)[{CalculatorConstants.ValidRomanNumberChars}]+)?))";
             var romanNumberParenthesesPattern = $@"\({romanNumberPattern}\)";
 
             // Порядок очень важен, надо чтобы первыми шли шаблоны со скобками и с дробными числами, чтобы приоритет выполнения операций был правильный
