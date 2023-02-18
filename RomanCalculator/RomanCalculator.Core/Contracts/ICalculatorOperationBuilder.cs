@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RomanCalculator.Core.Operations.Common;
 
 namespace RomanCalculator.Core.Contracts
 {
     public interface ICalculatorOperationBuilder
     {
-        /// <summary>
-        /// Добавленные операции калькулятора
-        /// </summary>
-        IReadOnlyCollection<CalculatorOperation> CalculatorOperations { get; }
         /// <summary>
         /// Добавить операцию для калькулятора
         /// </summary>
@@ -34,5 +31,9 @@ namespace RomanCalculator.Core.Contracts
         /// Добавить операцию вычитания
         /// </summary>
         ICalculatorOperationBuilder AddSubstractionOperation(int executePriority = 2, char operationMark = '-');
+        /// <summary>
+        /// Получить результат построения операций калькулятора
+        /// </summary>
+        IOrderedEnumerable<IGrouping<int, CalculatorOperation>> Build();
     }
 }

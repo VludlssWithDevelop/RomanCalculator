@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using RomanCalculator.Core.Contracts;
-using RomanCalculator.Operations;
 
 namespace RomanCalculator.Extensions
 {
@@ -13,9 +12,7 @@ namespace RomanCalculator.Extensions
         /// </summary>
         public static IServiceCollection AddRomanCalculatorDefault(this IServiceCollection services)
         {
-            var calculatorBuilder = CalculatorBuilder.CreateDefault();
-
-            services.TryAddSingleton<ICalculator>(provider => new Calculator(calculatorBuilder));
+            services.TryAddSingleton<ICalculator>(provider => Calculator.CreateDefault());
 
             return services;
         }
@@ -26,11 +23,7 @@ namespace RomanCalculator.Extensions
         /// <param name="calculatorBuilderFunc">Callback для добавления кастомных операций</param>
         public static IServiceCollection AddRomanCalculator(this IServiceCollection services, Action<ICalculatorOperationBuilder> calculatorBuilderFunc)
         {
-            var calculatorBuilder = new CalculatorBuilder();
-
-            calculatorBuilderFunc(calculatorBuilder);
-
-            services.TryAddSingleton<ICalculator>(provider => new Calculator(calculatorBuilder));
+            services.TryAddSingleton<ICalculator>(provider => Calculator.Create(calculatorBuilderFunc));
 
             return services;
         }

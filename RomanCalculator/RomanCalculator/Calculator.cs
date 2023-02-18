@@ -6,7 +6,6 @@ using RomanCalculator.Core;
 using RomanCalculator.Core.Contracts;
 using RomanCalculator.Core.Exceptions;
 using RomanCalculator.Core.Operations.Common;
-using RomanCalculator.Operations;
 using RomanNumerals;
 
 namespace RomanCalculator
@@ -17,14 +16,30 @@ namespace RomanCalculator
 
         public Calculator(ICalculatorOperationBuilder calculatorBuilder)
         {
-            _groupedCalculatorOperations = calculatorBuilder.CalculatorOperations
-                .GroupBy(calculatorOperation => calculatorOperation.ExecutePriority)
-                .OrderBy(calculatorOperation => calculatorOperation.Key);
+            _groupedCalculatorOperations = calculatorBuilder.Build();
+        }
+
+        public Calculator(Action<ICalculatorOperationBuilder> calculatorBuilderFunc)
+        {
+            var calculatorBuilder = new CalculatorOperationBuilder();
+
+            calculatorBuilderFunc(calculatorBuilder);
+
+            _groupedCalculatorOperations = calculatorBuilder.Build();
         }
 
         public static Calculator CreateDefault()
         {
-            var calculatorBuilder = CalculatorBuilder.CreateDefault();
+            var calculatorBuilder = CalculatorOperationBuilder.CreateDefault();
+
+            return new Calculator(calculatorBuilder);
+        }
+
+        public static Calculator Create(Action<ICalculatorOperationBuilder> calculatorBuilderFunc)
+        {
+            var calculatorBuilder = new CalculatorOperationBuilder();
+
+            calculatorBuilderFunc(calculatorBuilder);
 
             return new Calculator(calculatorBuilder);
         }
