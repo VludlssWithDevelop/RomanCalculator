@@ -111,5 +111,25 @@ namespace RomanCalculator.Tests
                     break;
             }
         }
+
+        [Fact]
+        public void CreateCalculator_WithAlreadyExistedOperationMark_ShouldBe_Fail()
+        {
+            Action act = () =>
+            {
+                IServiceCollection services = new ServiceCollection();
+                services.AddRomanCalculator(builder =>
+                {
+                    builder.AddDefaultOperations();
+                    builder.AddAdditionOperation(2, '-');
+                });
+
+                var provider = services.BuildServiceProvider();
+
+                var calculator = provider.GetRequiredService<ICalculator>();
+            };
+
+            act.Should().ThrowExactly<OperationMarkAlreadyExistException>();
+        }
     }
 }
